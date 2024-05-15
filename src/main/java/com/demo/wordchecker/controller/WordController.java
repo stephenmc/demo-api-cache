@@ -1,7 +1,6 @@
 package com.demo.wordchecker.controller;
 
 import com.demo.wordchecker.constants.AppConstants;
-import com.demo.wordchecker.messaging.jms.Producer;
 import com.demo.wordchecker.model.Palindrome;
 import com.demo.wordchecker.model.Word;
 import org.springframework.beans.factory.annotation.Autowired;
