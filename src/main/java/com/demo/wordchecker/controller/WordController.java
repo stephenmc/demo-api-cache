@@ -1,7 +1,6 @@
 package com.demo.wordchecker.controller;
 
 import com.demo.wordchecker.constants.AppConstants;
-import com.demo.wordchecker.messaging.jms.Producer;
 import com.demo.wordchecker.model.Palindrome;
 import com.demo.wordchecker.model.Word;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +22,10 @@ public class WordController {
     @Autowired
     private WordService wordService;
 
-    //@Autowired
-    //private Producer producer;
-
     @GetMapping("palindrome")
     public Word getPalindrome(@RequestParam("username") String id, @RequestParam("text") String text) throws Exception {
 
         Palindrome palindrome = wordService.check(text);
-        //wordService.save(palindrome);
-        //producer.sendMessage(text);
         return palindrome;
     }
 }

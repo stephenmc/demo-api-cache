@@ -14,11 +14,13 @@ public class WordService {
     
     final private PalindromeValidation palidroneValidation;
     final private PalindromeRepositoryImp palidroneRepositoryImp;
+    final private AsyncSave asyncSave;
     
     public WordService(PalindromeValidation palidroneValidation,
-            PalindromeRepositoryImp palidroneRepositoryImp){
+            PalindromeRepositoryImp palidroneRepositoryImp, AsyncSave asyncSave){
         this.palidroneValidation = palidroneValidation;
         this.palidroneRepositoryImp = palidroneRepositoryImp;
+        this.asyncSave = asyncSave;
     }
 
     @Cacheable(value ="palindrome", key = "#text")
@@ -31,7 +33,9 @@ public class WordService {
     
     public Palindrome calulate(String text){
         log.debug("calculating text: "+text);        
-        return new Palindrome(text, palidroneValidation.isValid(text));
+        Palindrome result = new Palindrome(text, palidroneValidation.isValid(text));
+        asyncSaveWithCheck(result);
+        return result;
     }
     
     public List<Palindrome> findAll(){
@@ -48,5 +52,17 @@ public class WordService {
         log.debug("checking whether Palindrome exists for: "+text);
         return palidroneRepositoryImp.findByText(text);
     }
+    
+    public void saveWithCheck(Palindrome palindrome){
+        Palindrome result =  findByText(palindrome.getText());        
+        if(result == null){
+            save(palindrome);
+        }        
+    }
+    
+    public void asyncSaveWithCheck(Palindrome palindrome){
+        Runnable r = () -> saveWithCheck(palindrome);
+        asyncSave.saveAsync( r);
+    }    
 }
 

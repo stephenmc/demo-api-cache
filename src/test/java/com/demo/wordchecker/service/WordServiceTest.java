@@ -18,6 +18,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -32,6 +33,9 @@ public class WordServiceTest {
     @Autowired
     private WordService wordService;
     
+    @MockBean
+    private AsyncSave asyncSave;
+            
     @Autowired
     private CacheManager cacheManager;
         
