@@ -1,0 +1,39 @@
+<configuration>
+
+    <property name="HOME_LOG" value="applogs/demo.log"/>
+
+    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>applogs/demo.%i.log</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>50</maxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>20MB</maxFileSize>
+        </triggeringPolicy>
+
+        <encoder>
+            <pattern>%d %c{1} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+    
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-5relative %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <logger name="com.demo" level="debug" additivity="false">
+    	<appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE-ROLLING"/>
+    </logger>
+
+    <root level="error">
+    	<appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE-ROLLING"/>
+    </root>
+
+</configuration>
